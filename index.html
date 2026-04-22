@@ -1,0 +1,982 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lumières de l'Islam — Biographies</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Amiri:ital,wght@0,400;0,700;1,400&family=Cinzel+Decorative:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --gold: #c9a84c;
+    --gold-light: #e8c97a;
+    --gold-pale: #f5e6b8;
+    --dark: #0d0b07;
+    --dark-mid: #1a1610;
+    --dark-panel: #211e16;
+    --ivory: #f2e8d5;
+    --ivory-dim: #c8b896;
+    --accent-red: #8b2a2a;
+    --text-body: #d4c4a0;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background-color: var(--dark);
+    color: var(--text-body);
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: 18px;
+    line-height: 1.7;
+    overflow-x: hidden;
+    cursor: default;
+  }
+
+  /* ─── BACKGROUND TEXTURE ─── */
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image:
+      radial-gradient(ellipse 80% 60% at 20% 10%, rgba(201,168,76,0.06) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 80% at 80% 90%, rgba(139,42,42,0.05) 0%, transparent 60%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  /* ─── GEOMETRIC BORDER ORNAMENT ─── */
+  .page-border {
+    position: fixed;
+    inset: 12px;
+    border: 1px solid rgba(201,168,76,0.15);
+    pointer-events: none;
+    z-index: 100;
+  }
+  .page-border::before, .page-border::after {
+    content: '';
+    position: absolute;
+    inset: 4px;
+    border: 1px solid rgba(201,168,76,0.07);
+  }
+
+  /* ─── HEADER ─── */
+  header {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 80px 40px 60px;
+    overflow: hidden;
+  }
+
+  .header-arabesque {
+    font-family: 'Amiri', serif;
+    font-size: clamp(28px, 6vw, 52px);
+    color: var(--gold);
+    letter-spacing: 0.15em;
+    line-height: 1.2;
+    margin-bottom: 8px;
+    opacity: 0;
+    animation: fadeDown 1.2s ease forwards 0.2s;
+  }
+
+  .header-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(22px, 4vw, 38px);
+    color: var(--ivory);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeDown 1.2s ease forwards 0.5s;
+  }
+
+  .header-sub {
+    font-family: 'Cormorant Garamond', serif;
+    font-style: italic;
+    font-size: clamp(14px, 2vw, 19px);
+    color: var(--ivory-dim);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    opacity: 0;
+    animation: fadeDown 1.2s ease forwards 0.8s;
+  }
+
+  .header-divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: 28px auto;
+    max-width: 500px;
+    opacity: 0;
+    animation: fadeIn 1.5s ease forwards 1s;
+  }
+  .header-divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+  .header-divider .diamond {
+    width: 8px; height: 8px;
+    background: var(--gold);
+    transform: rotate(45deg);
+    flex-shrink: 0;
+  }
+
+  /* ─── NAVIGATION TABS ─── */
+  nav {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    justify-content: center;
+    gap: 4px;
+    flex-wrap: wrap;
+    padding: 0 40px 50px;
+    opacity: 0;
+    animation: fadeUp 1s ease forwards 1.1s;
+  }
+
+  .tab-btn {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 15px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ivory-dim);
+    background: transparent;
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 10px 24px;
+    cursor: pointer;
+    transition: all 0.35s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .tab-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(201,168,76,0.1), rgba(201,168,76,0.05));
+    opacity: 0;
+    transition: opacity 0.35s;
+  }
+  .tab-btn:hover::before, .tab-btn.active::before { opacity: 1; }
+  .tab-btn:hover, .tab-btn.active {
+    color: var(--gold-light);
+    border-color: var(--gold);
+  }
+  .tab-btn.active {
+    color: var(--gold);
+    box-shadow: 0 0 20px rgba(201,168,76,0.1);
+  }
+
+  /* ─── MAIN CONTENT ─── */
+  main {
+    position: relative;
+    z-index: 10;
+    max-width: 1300px;
+    margin: 0 auto;
+    padding: 0 40px 100px;
+  }
+
+  .section { display: none; }
+  .section.active { display: block; animation: sectionReveal 0.6s ease forwards; }
+
+  /* ─── SECTION HEADER ─── */
+  .section-header {
+    text-align: center;
+    margin-bottom: 60px;
+  }
+  .section-label {
+    font-family: 'Amiri', serif;
+    font-size: 32px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 6px;
+  }
+  .section-title {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--ivory);
+    font-weight: 400;
+    letter-spacing: 0.1em;
+  }
+  .section-line {
+    width: 120px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    margin: 20px auto 0;
+  }
+
+  /* ─── CARDS GRID ─── */
+  .cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+    gap: 28px;
+  }
+
+  .person-card {
+    background: var(--dark-panel);
+    border: 1px solid rgba(201,168,76,0.18);
+    padding: 0;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    position: relative;
+    overflow: hidden;
+    animation: cardReveal 0.5s ease both;
+  }
+  .person-card:nth-child(1) { animation-delay: 0.05s; }
+  .person-card:nth-child(2) { animation-delay: 0.1s; }
+  .person-card:nth-child(3) { animation-delay: 0.15s; }
+  .person-card:nth-child(4) { animation-delay: 0.2s; }
+  .person-card:nth-child(5) { animation-delay: 0.25s; }
+  .person-card:nth-child(6) { animation-delay: 0.3s; }
+
+  .person-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+    transform: scaleX(0);
+    transition: transform 0.4s ease;
+  }
+  .person-card:hover::before { transform: scaleX(1); }
+  .person-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 30px rgba(201,168,76,0.06);
+    border-color: rgba(201,168,76,0.4);
+  }
+
+  .card-banner {
+    height: 6px;
+    background: linear-gradient(90deg, var(--accent-red), var(--gold), var(--accent-red));
+  }
+  .card-banner.companion { background: linear-gradient(90deg, #1a3a2a, #4a8c6a, #1a3a2a); }
+  .card-banner.other { background: linear-gradient(90deg, #1a1a3a, #4a4a8c, #1a1a3a); }
+
+  .card-inner { padding: 28px 30px 32px; }
+
+  .card-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 4px;
+    direction: rtl;
+  }
+
+  .card-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 16px;
+    color: var(--ivory);
+    font-weight: 400;
+    letter-spacing: 0.06em;
+    margin-bottom: 10px;
+  }
+
+  .card-epithet {
+    font-style: italic;
+    color: var(--gold-pale);
+    font-size: 15px;
+    margin-bottom: 16px;
+    opacity: 0.8;
+  }
+
+  .card-dates {
+    display: flex;
+    gap: 20px;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ivory-dim);
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid rgba(201,168,76,0.1);
+  }
+  .card-dates span { display: flex; align-items: center; gap: 6px; }
+  .card-dates .dot {
+    width: 5px; height: 5px;
+    background: var(--gold);
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  .card-excerpt {
+    font-size: 15px;
+    line-height: 1.75;
+    color: var(--text-body);
+    opacity: 0.85;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  .card-read {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 20px;
+    font-size: 13px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    border-bottom: 1px solid transparent;
+    transition: border-color 0.3s;
+  }
+  .person-card:hover .card-read { border-color: var(--gold); }
+  .card-read::after { content: '→'; font-size: 16px; }
+
+  /* ─── MODAL / BIOGRAPHY ─── */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(8,6,3,0.92);
+    z-index: 1000;
+    overflow-y: auto;
+    padding: 40px 20px;
+    backdrop-filter: blur(6px);
+  }
+  .modal-overlay.open { display: flex; justify-content: center; align-items: flex-start; animation: fadeIn 0.3s ease; }
+
+  .modal {
+    background: var(--dark-panel);
+    border: 1px solid rgba(201,168,76,0.25);
+    max-width: 800px;
+    width: 100%;
+    position: relative;
+    padding: 0;
+    animation: modalReveal 0.4s ease;
+  }
+  .modal::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: linear-gradient(90deg, transparent, var(--gold), transparent);
+  }
+
+  .modal-header {
+    padding: 50px 60px 30px;
+    border-bottom: 1px solid rgba(201,168,76,0.12);
+    text-align: center;
+  }
+  .modal-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 36px;
+    color: var(--gold);
+    direction: rtl;
+    display: block;
+    margin-bottom: 8px;
+  }
+  .modal-name {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: clamp(18px, 3vw, 26px);
+    color: var(--ivory);
+    font-weight: 400;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+  .modal-epithet {
+    font-style: italic;
+    color: var(--gold-pale);
+    font-size: 16px;
+    margin-bottom: 20px;
+  }
+  .modal-meta {
+    display: flex;
+    justify-content: center;
+    gap: 30px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ivory-dim);
+  }
+  .modal-meta span { display: flex; align-items: center; gap: 8px; }
+  .modal-meta .gem {
+    width: 6px; height: 6px;
+    background: var(--gold);
+    transform: rotate(45deg);
+  }
+
+  .modal-body {
+    padding: 40px 60px 60px;
+    font-size: 16.5px;
+    line-height: 1.9;
+  }
+  .modal-body h3 {
+    font-family: 'Cinzel Decorative', serif;
+    font-size: 14px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin: 36px 0 14px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+  .modal-body h3::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, rgba(201,168,76,0.4), transparent);
+  }
+  .modal-body p { margin-bottom: 16px; }
+  .modal-body .highlight {
+    border-left: 2px solid var(--gold);
+    padding-left: 20px;
+    color: var(--ivory-dim);
+    font-style: italic;
+    margin: 24px 0;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 20px; right: 24px;
+    background: none;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: var(--ivory-dim);
+    width: 36px; height: 36px;
+    font-size: 18px;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.3s;
+  }
+  .modal-close:hover { border-color: var(--gold); color: var(--gold); background: rgba(201,168,76,0.08); }
+
+  /* ─── FOOTER ─── */
+  footer {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 40px;
+    border-top: 1px solid rgba(201,168,76,0.1);
+    color: var(--ivory-dim);
+    font-size: 14px;
+    letter-spacing: 0.1em;
+  }
+  footer .footer-arabic {
+    font-family: 'Amiri', serif;
+    font-size: 22px;
+    color: var(--gold);
+    display: block;
+    margin-bottom: 10px;
+    opacity: 0.7;
+  }
+
+  /* ─── ANIMATIONS ─── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+  @keyframes sectionReveal {
+    from { opacity: 0; transform: translateY(15px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cardReveal {
+    from { opacity: 0; transform: translateY(20px) scale(0.98); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+  @keyframes modalReveal {
+    from { opacity: 0; transform: translateY(30px) scale(0.97); }
+    to   { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  /* ─── RESPONSIVE ─── */
+  @media (max-width: 700px) {
+    main { padding: 0 20px 80px; }
+    .modal-header, .modal-body { padding: 30px 24px; }
+    .cards-grid { grid-template-columns: 1fr; }
+    nav { padding: 0 20px 40px; }
+    .page-border { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="page-border"></div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-arabesque">بِسْمِ اللَّهِ الرَّحْمَنِ الرَّحِيم</div>
+  <h1 class="header-title">Lumières de l'Islam</h1>
+  <p class="header-sub">Biographies des Prophètes &amp; Compagnons</p>
+  <div class="header-divider">
+    <span class="line"></span>
+    <span class="diamond"></span>
+    <span class="line"></span>
+  </div>
+</header>
+
+<!-- NAVIGATION -->
+<nav>
+  <button class="tab-btn active" onclick="showSection('prophetes')">Les Prophètes</button>
+  <button class="tab-btn" onclick="showSection('compagnons')">Les Compagnons</button>
+  <button class="tab-btn" onclick="showSection('savants')">Les Savants</button>
+</nav>
+
+<!-- MAIN CONTENT -->
+<main>
+
+  <!-- ═══ PROPHÈTES ═══ -->
+  <section id="prophetes" class="section active">
+    <div class="section-header">
+      <span class="section-label">الأنبياء والرسل</span>
+      <h2 class="section-title">Les Prophètes et Messagers</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid" id="grid-prophetes"></div>
+  </section>
+
+  <!-- ═══ COMPAGNONS ═══ -->
+  <section id="compagnons" class="section">
+    <div class="section-header">
+      <span class="section-label">الصحابة الكرام</span>
+      <h2 class="section-title">Les Nobles Compagnons</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid" id="grid-compagnons"></div>
+  </section>
+
+  <!-- ═══ SAVANTS ═══ -->
+  <section id="savants" class="section">
+    <div class="section-header">
+      <span class="section-label">العلماء الأعلام</span>
+      <h2 class="section-title">Les Grands Savants</h2>
+      <div class="section-line"></div>
+    </div>
+    <div class="cards-grid" id="grid-savants"></div>
+  </section>
+
+</main>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal-overlay" onclick="closeModal(event)">
+  <div class="modal" id="modal-box">
+    <button class="modal-close" onclick="closeModalDirect()">✕</button>
+    <div class="modal-header" id="modal-header"></div>
+    <div class="modal-body" id="modal-body"></div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <span class="footer-arabic">﷽</span>
+  <span>Lumières de l'Islam — Que la paix et les bénédictions soient sur tous les prophètes</span>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+//  DATA
+// ═══════════════════════════════════════════════
+const data = {
+  prophetes: [
+    {
+      arabic: "سيدنا محمد ﷺ",
+      name: "Muhammad",
+      epithet: "Le Sceau des Prophètes — Khatam al-Anbiya",
+      born: "570 ap. J.-C.", died: "632 ap. J.-C.",
+      origin: "La Mecque, Arabie",
+      banner: "prophet",
+      excerpt: "Dernier et plus grand des prophètes, envoyé comme miséricorde pour l'humanité entière. Sa vie fut un modèle de sagesse, de compassion et de foi inébranlable.",
+      sections: [
+        {
+          title: "Naissance et Jeunesse",
+          text: `Muhammad ibn 'Abdillah naquit en l'an 570 de notre ère à La Mecque, au sein du clan Banu Hashim de la tribu Quraysh. Son père, 'Abdullah, mourut avant sa naissance, et sa mère Aminah le confia à une nourrice bédouine, Halima al-Sa'diyya, selon la tradition des nobles Arabes.
+
+Très tôt orphelin de mère à six ans, il fut recueilli par son grand-père 'Abd al-Muttalib, puis à la mort de ce dernier par son oncle Abu Talib. C'est dans ce berceau de l'aridité et de la générosité bédouine qu'il forgea sa droiture légendaire. Ses compatriotes le surnommaient Al-Amin — le Digne de Confiance.`
+        },
+        {
+          title: "La Révélation",
+          text: `À quarante ans, lors d'une retraite spirituelle dans la grotte de Hira sur le mont Nur, il reçut la première révélation divine par l'intermédiaire de l'ange Jibril (Gabriel). Le premier verset révélé fut : "Lis, au nom de ton Seigneur qui a créé."
+
+Cette nuit, connue sous le nom de Laylat al-Qadr (la Nuit du Destin), changea à jamais le cours de l'histoire humaine. Pendant vingt-trois ans, la révélation du Coran se poursuivit, guidant la communauté naissante des croyants.`,
+          quote: "Je suis Muhammad, fils d'Abdullah, fils d'Abdul-Muttalib. Allah m'a créé et m'a fait le meilleur de Sa création."
+        },
+        {
+          title: "L'Hégire et Médine",
+          text: `Face aux persécutions mecquoises, le Prophète ﷺ émigra à Médine en 622, marquant le début du calendrier islamique. Là, il fonda la première cité-état musulmane, instaura une constitution réglant les rapports entre communautés, et posa les bases de la fraternité islamique.
+
+Après dix années de gouvernance sage et de batailles défensives, il entra victorieusement à La Mecque en 630 dans un geste de clémence sans précédent, pardonnant ses anciens ennemis.`
+        },
+        {
+          title: "Caractère et Héritage",
+          text: `Le Prophète ﷺ était connu pour sa tendresse envers les enfants, sa bienveillance envers les plus faibles et son respect pour les femmes — révolutionnaire pour son époque. Sa femme Khadijah fut la première croyante, et il ne cessa de louer sa fidélité tout au long de sa vie.
+
+Il s'éteignit le 12 Rabi' al-Awwal de l'an 11 H. Son héritage : le Coran, la Sunnah, et une communauté d'un milliard et demi d'âmes qui perpétuent son message.`
+        }
+      ]
+    },
+    {
+      arabic: "سيدنا إبراهيم عليه السلام",
+      name: "Ibrahim (Abraham)",
+      epithet: "Khalilullah — L'Ami Intime d'Allah",
+      born: "~2000 av. J.-C.", died: "~1825 av. J.-C.",
+      origin: "Ur des Chaldéens, Mésopotamie",
+      banner: "prophet",
+      excerpt: "Père des trois monothéismes, Ibrahim brisa les idoles de son peuple et éleva les fondations de la Kaaba avec son fils Ismail, symbole éternel de la soumission à Dieu.",
+      sections: [
+        {
+          title: "L'Éveil de la Raison",
+          text: `Ibrahim naquit dans une société idolâtre, mais dès son jeune âge, son intellect le porta vers la recherche du Créateur. Il observa les étoiles, la lune, le soleil — chaque fois concluant : "Je n'aime pas ceux qui se couchent." Son cœur cherchait l'Éternel, l'Immuable.
+
+Son père Azar était sculpteur d'idoles, et Ibrahim lui dit avec douceur mais fermeté : "Ô mon père, pourquoi adores-tu ce qui n'entend ni ne voit ?" Cette dialectique intérieure et extérieure fait d'Ibrahim le premier grand penseur monothéiste de l'histoire.`
+        },
+        {
+          title: "L'Épreuve du Feu",
+          text: `Ayant brisé les idoles du temple, seul le plus grand resta debout, la hache entre ses mains. Quand le roi Nimrod l'interrogea, Ibrahim retourna l'accusation contre les idoles muettes. Furieux, Nimrod ordonna de le jeter dans un bûcher colossal.
+
+Allah dit alors au feu : "Sois fraîcheur et paix pour Ibrahim." Et le feu obéit. Ibrahim en sortit indemne, affermissant sa foi et bouleversant les témoins de ce miracle.`,
+          quote: "Ibrahim dit : 'Je me tourne vers Celui qui a créé les cieux et la terre, en pur monothéiste, et je ne suis pas des polythéistes.'"
+        },
+        {
+          title: "La Construction de la Kaaba",
+          text: `Sur ordre divin, Ibrahim amena son épouse Hajar et son fils Ismail dans la vallée aride de La Mecque. Hajar courut entre les collines de Safa et Marwa cherchant de l'eau — et la source Zamzam jaillit miraculeusement.
+
+Plus tard, Ibrahim et Ismail élevèrent ensemble les murs de la Kaaba, priant : "Notre Seigneur, accepte de nous cet acte. Tu es l'Audient, l'Omniscient." Ce sanctuaire est encore aujourd'hui le centre de la qibla (direction de prière) pour les musulmans du monde entier.`
+        }
+      ]
+    },
+    {
+      arabic: "سيدنا موسى عليه السلام",
+      name: "Musa (Moïse)",
+      epithet: "Kalimullah — Celui à qui Allah parla directement",
+      born: "~1393 av. J.-C.", died: "~1273 av. J.-C.",
+      origin: "Égypte",
+      banner: "prophet",
+      excerpt: "Né au temps où Pharaon massacrait les nouveau-nés, Musa grandit dans le palais de son ennemi avant de devenir le libérateur de son peuple et le récipiendaire de la Torah.",
+      sections: [
+        {
+          title: "Une Naissance Miraculeuse",
+          text: `Né sous le règne de Pharaon Ramses II, Musa fut sauvé par l'ingéniosité de sa mère : elle le déposa dans un couffin sur le Nil. Sa sœur le suivit discrètement jusqu'à ce qu'il soit recueilli par la famille même de Pharaon.
+
+La Providence divine fit en sorte que sa mère biologique fut appelée comme nourrice — elle allaita son propre fils dans le palais de l'ennemi, le cœur apaisé par la promesse divine : "Nous te le rendrons et ferons de lui un messager."`
+        },
+        {
+          title: "La Révélation du Sinaï",
+          text: `Après avoir fui l'Égypte et vécu des années à Madyan, Musa vit un feu dans le Sinaï. En s'approchant, il entendit la voix divine : "Je suis Allah, le Seigneur des mondes. Jette ton bâton !" Le bâton devint serpent. "Mets ta main dans ta chemise" — elle en ressortit blanche et lumineuse sans maladie.
+
+Ces deux signes allaient lui permettre d'affronter Pharaon et de libérer les Bani Israil de l'esclavage.`,
+          quote: "Allah dit : 'Ô Musa, Je t'ai choisi parmi les hommes pour porter Mes messages et Ma Parole. Prends ce que Je t'accorde et sois des reconnaissants.'"
+        },
+        {
+          title: "La Traversée de la Mer",
+          text: `Face à l'armée de Pharaon derrière eux et la mer devant, les Bani Israil désespérèrent. Musa dit : "Non ! Mon Seigneur est avec moi, Il me guidera." Il frappa la mer de son bâton — elle s'ouvrit en douze chemins secs entre des murs d'eau colossaux.
+
+Pharaon s'y engouffra à sa suite et fut englouti. Son corps fut préservé comme signe pour les générations futures — une découverte que certains archéologues associent à la momie de Ramsès II.`
+        }
+      ]
+    },
+    {
+      arabic: "سيدنا عيسى عليه السلام",
+      name: "'Isa (Jésus)",
+      epithet: "Ruhullah — L'Esprit d'Allah",
+      born: "~4 av. J.-C.", died: "Élevé vivant vers le Ciel",
+      origin: "Bethléem, Palestine",
+      banner: "prophet",
+      excerpt: "Né miraculeusement de la vierge Maryam, 'Isa parla depuis son berceau, guérit les malades, ressuscita les morts avec la permission d'Allah. Il sera descendu à la fin des temps.",
+      sections: [
+        {
+          title: "La Naissance Virginale",
+          text: `L'ange Jibril apparut à Maryam pour lui annoncer un fils. Elle dit : "Comment aurais-je un fils sans qu'un homme m'ait touchée ?" L'ange répondit : "Ainsi soit-il — Allah crée ce qu'Il veut. Quand Il décide d'une chose, Il dit seulement : 'Sois !' et elle est."
+
+L'enfant 'Isa ibn Maryam naquit sous un palmier, et les premières paroles qu'il prononça depuis son berceau répondirent à ceux qui accusaient sa mère : "Je suis le serviteur d'Allah. Il m'a donné le Livre et m'a fait prophète."`
+        },
+        {
+          title: "Les Miracles",
+          text: `'Isa guérit les aveugles et les lépreux avec la permission d'Allah. Il insuffla la vie dans des oiseaux d'argile. Il annonça à ses contemporains ce qu'ils mangeaient et cachaient chez eux. Et le plus grand : il ressuscita des morts — tout par la volonté divine.
+
+Il confirma la Torah et annonça la venue d'un prophète après lui, nommé dans certaines versions Ahmed — que les musulmans identifient comme Muhammad ﷺ.`
+        },
+        {
+          title: "L'Élévation",
+          text: `Lorsque les ennemis complotèrent de le tuer, Allah l'éleva vivant vers Lui. Le Coran affirme qu'il ne fut ni tué ni crucifié, mais qu'un semblant lui fut substitué. 'Isa reviendra avant la fin des temps, brisera la croix, tuera le Dajjal (l'Antéchrist) et fera régner la justice sur terre.`,
+          quote: "'Isa dit : 'Je suis venu à vous avec la sagesse et pour vous clarifier certaines des divergences dans lesquelles vous vous trouviez. Craignez Allah et obéissez-moi.'"
+        }
+      ]
+    }
+  ],
+
+  compagnons: [
+    {
+      arabic: "أبو بكر الصديق رضي الله عنه",
+      name: "Abu Bakr al-Siddiq",
+      epithet: "Al-Siddiq — Le Véridique, Premier Calife",
+      born: "573 ap. J.-C.", died: "634 ap. J.-C.",
+      origin: "La Mecque",
+      banner: "companion",
+      excerpt: "Premier homme libre à embrasser l'Islam, ami indéfectible du Prophète ﷺ depuis l'enfance, il devint le premier calife et préserva l'unité de l'Islam après la mort du Prophète.",
+      sections: [
+        {
+          title: "Une Amitié Légendaire",
+          text: `Abu Bakr 'Abdullah ibn Abi Quhafa était le plus proche ami du Prophète ﷺ avant même la révélation. Marchand prospère et homme de haute moralité, il accepta immédiatement l'Islam sans la moindre hésitation — d'où son titre Al-Siddiq, le Véridique.
+
+Il dépensa sa fortune dans la libération d'esclaves torturés pour leur foi, dont Bilal ibn Rabah. Sa générosité était sans limite : un jour, le Prophète ﷺ demanda des dons pour une expédition, et Abu Bakr apporta tout ce qu'il possédait. Quand le Prophète lui demanda ce qu'il avait laissé pour sa famille, il répondit : "Allah et Son Messager."`
+        },
+        {
+          title: "L'Hégire",
+          text: `C'est Abu Bakr qui accompagna le Prophète ﷺ dans la périlleuse émigration vers Médine. Ils se cachèrent trois jours dans la grotte de Thawr, cernés par les Mecquois. Abu Bakr tremblait, non pour lui-même, mais pour le Prophète.
+
+Le Coran immortalisa ce moment : "Il dit à son compagnon : Ne t'afflige pas, Allah est avec nous." Sa dévotion en ce moment de crise ultime lui valut une place dans les versets coraniques eux-mêmes.`
+        },
+        {
+          title: "Le Califat",
+          text: `À la mort du Prophète ﷺ, la communauté fut dévastée. C'est Abu Bakr qui rassembla les foules avec ses mots désormais célèbres : "Quiconque adorait Muhammad sache que Muhammad est mort. Quiconque adore Allah sache qu'Allah est vivant et ne meurt pas."
+
+Pendant deux ans de califat (632-634), il réunifika les tribus apostates, préserva le texte coranique en un recueil unique, et posa les bases de l'État islamique.`
+        }
+      ]
+    },
+    {
+      arabic: "عمر بن الخطاب رضي الله عنه",
+      name: "'Umar ibn al-Khattab",
+      epithet: "Al-Faruq — Celui qui sépare le Vrai du Faux",
+      born: "584 ap. J.-C.", died: "644 ap. J.-C.",
+      origin: "La Mecque",
+      banner: "companion",
+      excerpt: "Sa conversion fut un tournant dans l'histoire de l'Islam. Deuxième calife, il développa l'empire islamique, institua le calendrier hégirien et fut un modèle de justice et d'équité.",
+      sections: [
+        {
+          title: "La Conversion Fracassante",
+          text: `Avant sa conversion, 'Umar était l'un des plus féroces opposants à l'Islam. Il partait un jour pour tuer le Prophète ﷺ quand il apprit que sa propre sœur Fatima s'était convertie. Il entra chez elle en fureur, la frappa — puis lut les versets du Coran qu'elle récitait.
+
+Ces paroles divines traversèrent son cœur comme l'éclair. Le même homme qui voulait tuer le Prophète se retrouva à ses pieds, déclarant sa shahada. L'Islam, qui se pratiquait en secret, put désormais se proclamer publiquement.`
+        },
+        {
+          title: "Le Grand Calife",
+          text: `Sous le califat d'Umar (634-644), l'empire islamique s'étendit de la Perse à l'Égypte. Lui-même vivait avec une austérité remarquable — une seule robe rapiécée, pas de garde du corps, des promenades nocturnes incognito pour vérifier le bien-être de ses sujets.
+
+Il instaura le bayt al-mal (trésor public) pour redistribuer les richesses aux pauvres, aux orphelins et aux non-musulmans sous protection islamique. Un calife qui portait lui-même des sacs de nourriture aux veuves la nuit tombée.`
+        },
+        {
+          title: "La Charte de Jérusalem",
+          text: `Quand Jérusalem se rendit aux armées musulmanes, 'Umar entra dans la ville à pied, refusant le faste, tenant lui-même la bride de son chameau en alternance avec son serviteur. Sa charte garantit la sécurité de toutes les communautés religieuses — chrétiens, juifs, habitants — une leçon de tolérance avant son temps.`,
+          quote: "'Umar dit : 'Si un mulet trébuche en Irak, je crains de devoir en répondre devant Allah — pourquoi n'as-tu pas réparé la route ?'"
+        }
+      ]
+    },
+    {
+      arabic: "فاطمة الزهراء رضي الله عنها",
+      name: "Fatima al-Zahra",
+      epithet: "Sayyidat Nisa al-'Alamin — Maîtresse des Femmes des Mondes",
+      born: "~605 ap. J.-C.", died: "~632 ap. J.-C.",
+      origin: "La Mecque",
+      banner: "companion",
+      excerpt: "Fille bien-aimée du Prophète ﷺ, épouse d'Ali ibn Abi Talib, mère de Hasan et Husayn. Sa vie fut un exemple de piété, de patience et d'amour filial inégalé.",
+      sections: [
+        {
+          title: "La Fille du Prophète",
+          text: `Fatima naquit à La Mecque, la plus jeune fille du Prophète Muhammad ﷺ et de Khadijah. Dès l'enfance, elle fut le soutien affectif de son père — notamment lors des durs moments de persécution à La Mecque, quand elle nettoyait les immondices déversées sur lui par les ennemis de l'Islam.
+
+Son père l'appelait "Al-Zahra" (la Radieuse) et dit d'elle : "Fatima est une partie de moi. Quiconque la contrarie me contrarie."` 
+        },
+        {
+          title: "Épouse et Mère",
+          text: `Elle épousa 'Ali ibn Abi Talib, cousin du Prophète ﷺ et l'un des premiers à embrasser l'Islam. Leur union, bien que matériellement pauvre, fut un modèle de vie simple et spirituellement riche. Elle moulait elle-même la farine, portait l'eau, balayait la maison.
+
+Elle fut la mère de Hasan, Husayn, Zaynab et Umm Kulthum — des figures capitales dans l'histoire islamique.`
+        },
+        {
+          title: "Après le Prophète",
+          text: `Lorsque le Prophète ﷺ mourut, Fatima fut inconsolable. Elle mourut six mois après lui, en 632, à l'âge d'environ 27 ans — la première de la famille du Prophète à le rejoindre dans l'au-delà.
+
+Le Prophète lui avait dit en secret, dans ses derniers jours : "Tu seras la première de ma famille à me rejoindre." Fatima sourit alors pour la première fois depuis sa maladie — certitude de la miséricorde divine.`
+        }
+      ]
+    },
+    {
+      arabic: "بلال بن رباح رضي الله عنه",
+      name: "Bilal ibn Rabah",
+      epithet: "Sayyid al-Mu'adhdhinin — Maître des Muezzins",
+      born: "~580 ap. J.-C.", died: "~641 ap. J.-C.",
+      origin: "La Mecque (d'origine éthiopienne)",
+      banner: "companion",
+      excerpt: "Esclave éthiopien torturé pour sa foi, sa résistance 'Ahad, Ahad !' (Un seul, Un seul !) sous les pierres brûlantes est le symbole éternel de la dignité face à l'oppression.",
+      sections: [
+        {
+          title: "Ahad, Ahad !",
+          text: `Bilal ibn Rabah était l'esclave d'Umayya ibn Khalaf, l'un des plus cruels ennemis de l'Islam. Quand il se convertit, son maître le torturait sur le sable brûlant de La Mecque, posant sur sa poitrine des rochers en plein soleil, lui ordonnant d'abjurer. Bilal répétait inlassablement : "Ahad, Ahad !" — "Un seul, Un seul !" confessant l'unicité d'Allah.
+
+Abu Bakr al-Siddiq racheta sa liberté et la lui offrit. Cette seule transaction résuma tout l'esprit de l'Islam naissant : la dignité est plus précieuse que l'or.`
+        },
+        {
+          title: "La Voix de l'Aube",
+          text: `Le Prophète ﷺ confia à Bilal l'honneur d'être le premier muezzin de l'Islam — sa voix grave et profonde résonna depuis les hauteurs de Médine, appelant les croyants à la prière. L'adhan qu'il prononça pour la première fois est encore récité tel quel, milliards de fois par jour, aux quatre coins de la planète.
+
+Après la mort du Prophète ﷺ, Bilal ne put plus appeler à la prière — sa voix brisait au mot "Ash-hadu anna Muhammadan rasulullah", tellement il était submergé par le deuil.`
+        },
+        {
+          title: "Héritage",
+          text: `Bilal représente dans l'Islam l'abolition de toute hiérarchie raciale ou sociale. Le Prophète ﷺ dit : "L'Arabe n'est pas supérieur au non-Arabe, ni le non-Arabe à l'Arabe. Ni le blanc au noir, ni le noir au blanc. La supériorité ne s'acquiert que par la piété."
+
+Bilal en fut le symbole vivant — lui, d'origine servile et africaine, marchant en tête des armées musulmanes comme l'un des plus respectés compagnons.`
+        }
+      ]
+    }
+  ],
+
+  savants: [
+    {
+      arabic: "الإمام البخاري رحمه الله",
+      name: "Imam al-Bukhari",
+      epithet: "Amir al-Mu'minin fil-Hadith — Prince des Croyants dans le Hadith",
+      born: "810 ap. J.-C.", died: "870 ap. J.-C.",
+      origin: "Boukhara (Ouzbékistan actuel)",
+      banner: "other",
+      excerpt: "Auteur du Sahih al-Bukhari, considéré comme le livre le plus authentique après le Coran. Il parcourut des milliers de kilomètres pour recueillir et vérifier chaque hadith avec une rigueur sans précédent.",
+      sections: [
+        {
+          title: "Une Mémoire Prodigieuse",
+          text: `Muhammad ibn Ismail al-Bukhari naquit à Boukhara en 810. Sa mémoire était légendaire : à dix ans, il avait mémorisé des milliers de hadiths. On raconte qu'il fut un jour testé par les savants de Bagdad — on lui présenta 100 hadiths falsifiés (chaînes mélangées), et il les rectifia tous de mémoire.
+
+À seize ans, il accompagnait sa mère et son frère en pèlerinage à La Mecque. Il y resta pour apprendre — début d'une vie entière de voyage scientifique.`
+        },
+        {
+          title: "Le Sahih",
+          text: `Pour composer son Sahih, al-Bukhari parcourut plus de 100 000 km à cheval et à pied — de l'Asie centrale à l'Arabie, à l'Égypte, à la Syrie. Il collecta 600 000 hadiths et n'en retint que 7 275 après une vérification rigoureuse de chaque transmetteur.
+
+Avant d'inscrire chaque hadith, il faisait une ablution et priait deux raka'at. Cette méthode scientifique unique — la science du rijal (évaluation des transmetteurs) — est une contribution majeure à la critique historique.`
+        },
+        {
+          title: "L'Exil et la Mort",
+          text: `Vers la fin de sa vie, Imam al-Bukhari fut victime de jalousies et de complots politiques. Exilé de sa ville natale, il trouva refuge à Khartank, village près de Samarcande, où il mourut en 870 à l'âge de 62 ans.
+
+Ses derniers mots furent une prière : "Ô Allah, la terre s'est rétrécie pour moi malgré sa vastitude. Prends-moi vers Toi." Il mourut cette nuit-là.`
+        }
+      ]
+    },
+    {
+      arabic: "ابن سينا رحمه الله",
+      name: "Ibn Sina (Avicenne)",
+      epithet: "Al-Sheikh al-Ra'is — Le Maître Prince des Savants",
+      born: "980 ap. J.-C.", died: "1037 ap. J.-C.",
+      origin: "Afshana, près de Boukhara",
+      banner: "other",
+      excerpt: "Médecin, philosophe et scientifique universel. Son Canon de la Médecine fut le manuel de référence des facultés de médecine européennes pendant six siècles. Il écrivit plus de 400 ouvrages.",
+      sections: [
+        {
+          title: "L'Enfant Prodige",
+          text: `Abu Ali al-Husayn ibn Sina mémorisa le Coran à dix ans. À seize ans, il surpassait déjà en médecine les maîtres qui l'enseignaient. À dix-huit ans, il guérit le sultan Nuh II d'une maladie que personne d'autre n'avait pu soigner — en récompense, il obtint l'accès à la bibliothèque royale, l'une des plus riches du monde.
+
+Il dit lui-même : "J'ai lu tout ce que contenait cette bibliothèque. Certains livres, personne après moi ne les avait vus, et personne avant moi ne les avait lus."` 
+        },
+        {
+          title: "Le Canon de la Médecine",
+          text: `Le Qanun fi al-Tibb (Canon de la Médecine) est une encyclopédie médicale en cinq volumes qui synthétise les savoirs grecs, arabes et indiens. Il traite des maladies infectieuses, de la quarantaine, des épidémies, de la neurologie, de la psychiatrie — avec une rigueur scientifique remarquable.
+
+Traduit en latin au XIIe siècle, il fut utilisé dans les universités de Paris, Oxford et Bologne jusqu'au XVIIe siècle. Ibn Sina avait compris que certaines maladies se transmettent par l'eau et le sol — intuition confirmée sept siècles plus tard par Pasteur.`
+        },
+        {
+          title: "Philosophe et Mystique",
+          text: `Ibn Sina ne fut pas seulement médecin. Il composa des traités de logique, de métaphysique, de mathématiques, d'astronomie et de poésie. Sa "Philosophie orientale" tenta de réconcilier raison et révélation.
+
+Il écrivit une célèbre "Ode à l'Âme" (Qasida fi al-Nafs) dans laquelle l'âme, descendue du monde supérieur, aspire à y retourner — une méditation mystique d'une beauté saisissante.`
+        }
+      ]
+    }
+  ]
+};
+
+// ═══════════════════════════════════════════════
+//  RENDER CARDS
+// ═══════════════════════════════════════════════
+function renderCards(category) {
+  const grid = document.getElementById('grid-' + category);
+  if (!grid) return;
+  grid.innerHTML = '';
+  data[category].forEach((person, idx) => {
+    const card = document.createElement('div');
+    card.className = 'person-card';
+    const bannerClass = person.banner === 'companion' ? 'companion' : (person.banner === 'other' ? 'other' : '');
+    card.innerHTML = `
+      <div class="card-banner ${bannerClass}"></div>
+      <div class="card-inner">
+        <span class="card-arabic">${person.arabic}</span>
+        <div class="card-name">${person.name}</div>
+        <div class="card-epithet">${person.epithet}</div>
+        <div class="card-dates">
+          <span><span class="dot"></span>Naissance: ${person.born}</span>
+          <span><span class="dot"></span>Décès: ${person.died}</span>
+        </div>
+        <p class="card-excerpt">${person.excerpt}</p>
+        <span class="card-read">Lire la biographie</span>
+      </div>
+    `;
+    card.onclick = () => openModal(category, idx);
+    grid.appendChild(card);
+  });
+}
+
+// ═══════════════════════════════════════════════
+//  MODAL
+// ═══════════════════════════════════════════════
+function openModal(category, idx) {
+  const p = data[category][idx];
+  const header = document.getElementById('modal-header');
+  const body = document.getElementById('modal-body');
+
+  header.innerHTML = `
+    <span class="modal-arabic">${p.arabic}</span>
+    <div class="modal-name">${p.name}</div>
+    <div class="modal-epithet">${p.epithet}</div>
+    <div class="modal-meta">
+      <span><span class="gem"></span> Naissance : ${p.born}</span>
+      <span><span class="gem"></span> Décès : ${p.died}</span>
+      <span><span class="gem"></span> Origine : ${p.origin}</span>
+    </div>
+  `;
+
+  let bodyHtml = '';
+  p.sections.forEach(sec => {
+    bodyHtml += `<h3>${sec.title}</h3>`;
+    bodyHtml += `<p>${sec.text.replace(/\n\n/g, '</p><p>')}</p>`;
+    if (sec.quote) {
+      bodyHtml += `<div class="highlight">${sec.quote}</div>`;
+    }
+  });
+  body.innerHTML = bodyHtml;
+
+  document.getElementById('modal-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal(e) {
+  if (e.target === document.getElementById('modal-overlay')) closeModalDirect();
+}
+function closeModalDirect() {
+  document.getElementById('modal-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+// ═══════════════════════════════════════════════
+//  TABS
+// ═══════════════════════════════════════════════
+function showSection(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  event.target.classList.add('active');
+}
+
+// ═══════════════════════════════════════════════
+//  INIT
+// ═══════════════════════════════════════════════
+renderCards('prophetes');
+renderCards('compagnons');
+renderCards('savants');
+
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
+</script>
+</body>
+</html>
